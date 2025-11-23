@@ -1,0 +1,46 @@
+<div id="product-description-wrapper">
+  <span id="product-description" class="short-description">
+    {{ product.description | strip_html | truncate: 200 }}
+  </span>
+  <span id="full-description" class="full-description" style="display:none;">
+    {{ product.description }}
+  </span>
+  <span id="read-more-btn" class="read-more-btn">Read More</span>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('read-more-btn');
+    var shortDesc = document.getElementById('product-description');
+    var fullDesc = document.getElementById('full-description');
+
+    btn.addEventListener('click', function() {
+      if (fullDesc.style.display === 'none') {
+        fullDesc.style.display = 'inline';
+        shortDesc.style.display = 'none';
+        btn.textContent = 'Read Less';
+      } else {
+        fullDesc.style.display = 'none';
+        shortDesc.style.display = 'inline';
+        btn.textContent = 'Read More';
+      }
+    });
+  });
+</script>
+
+<style>
+#product-description-wrapper {
+  display: inline;
+}
+
+.read-more-btn {
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.read-more-btn:hover {
+  opacity: 0.8;
+}
+</style>

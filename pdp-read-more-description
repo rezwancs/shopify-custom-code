@@ -1,29 +1,35 @@
+{% assign truncate_limit = 200 %}
+{% assign full_desc = product.description | strip_html %}
+{% assign short_desc = full_desc | truncate: truncate_limit %}
+
 <div id="product-description-wrapper">
   <span id="product-description" class="short-description">
-    {{ product.description | strip_html | truncate: 200 }}
+    {{ short_desc }}
   </span>
+
   <span id="full-description" class="full-description" style="display:none;">
     {{ product.description }}
   </span>
-  <span id="read-more-btn" class="read-more-btn">Read More</span>
+
+  {% if full_desc != short_desc %}
+    <span id="read-more-btn" class="read-more-btn">Read More</span>
+  {% endif %}
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var btn = document.getElementById('read-more-btn');
+    if (!btn) return;
+
     var shortDesc = document.getElementById('product-description');
     var fullDesc = document.getElementById('full-description');
 
     btn.addEventListener('click', function() {
-      if (fullDesc.style.display === 'none') {
-        fullDesc.style.display = 'inline';
-        shortDesc.style.display = 'none';
-        btn.textContent = 'Read Less';
-      } else {
-        fullDesc.style.display = 'none';
-        shortDesc.style.display = 'inline';
-        btn.textContent = 'Read More';
-      }
+      var isHidden = fullDesc.style.display === 'none';
+
+      fullDesc.style.display = isHidden ? 'inline' : 'none';
+      shortDesc.style.display = isHidden ? 'none' : 'inline';
+      btn.textContent = isHidden ? 'Read Less' : 'Read More';
     });
   });
 </script>
@@ -33,11 +39,17 @@
   display: inline;
 }
 
+.short-description,
+.full-description {
+  line-height: 1.5;
+}
+
 .read-more-btn {
   color: #000;
   font-weight: bold;
   cursor: pointer;
-  margin-left: 5px;
+  margin-left: 6px;
+  font-size: 15px;
 }
 
 .read-more-btn:hover {
